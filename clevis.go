@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-const VERSION = "0.1.0"
+const VERSION = "0.1.1"
 
 func main() {
 	var output []byte
@@ -41,18 +41,20 @@ func main() {
 		usage()
 
 	case "version":
-		fmt.Printf("Version %s", VERSION)
+		fmt.Println("Version "+VERSION)
 
 	default:
 		usage("Error: unknown action")
 	}
 
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error: %s", err)
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Println(string(output))
+	if output != nil {
+		fmt.Println(string(output))
+	}
 }
 
 func usage(params ...string) {
