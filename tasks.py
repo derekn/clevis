@@ -31,11 +31,11 @@ def build(c, version=None, target=None):
 	c.run(f"go build -ldflags '-s -w -X main.version={version}' -o '{output}'", echo=True, env=env)
 
 @task(clean)
-def release(c, compress=True):
+def release(c, targets=None, compress=True):
 	"""do release builds and compress"""
 
 	version = get_version(c)
-	targets = ['darwin/amd64', 'darwin/arm64', 'linux/amd64', 'linux/arm', 'linux/arm64']
+	targets = targets if targets else ['darwin/amd64', 'darwin/arm64', 'linux/amd64', 'linux/arm', 'linux/arm64']
 
 	for target in targets:
 		build(c, version, target)
