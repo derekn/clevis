@@ -2,16 +2,22 @@
 Clevis front-end CLI
 @author Derek Nicol
 */
+
 package main
 
 import (
 	"fmt"
-	"github.com/anatol/clevis.go"
 	"io"
 	"os"
+	"runtime"
+
+	"github.com/anatol/clevis.go"
 )
 
 var version = "0.0.0-dev"
+var commitSha = ""
+var goVersion = ""
+var libVersion = ""
 
 func main() {
 	var output []byte
@@ -41,7 +47,10 @@ func main() {
 		usage()
 
 	case "version":
-		fmt.Println("Version "+version)
+		fmt.Printf(
+			"Clevis v%s (%s) %s/%s %s (anatol/clevis v%s)\n",
+			version, commitSha[:7], runtime.GOOS, runtime.GOARCH, goVersion, libVersion,
+		)
 
 	default:
 		usage("Error: unknown action")
