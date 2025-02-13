@@ -15,3 +15,9 @@ clevis decrypt < CIPHERTEXT.jwe > PLAINTEXT
 ```
 
 See the [Clevis](https://github.com/latchset/clevis) repo for PINS and CONFIG parameters.
+
+## Building
+
+```bash
+make build
+```

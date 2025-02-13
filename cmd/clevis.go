@@ -1,8 +1,3 @@
-/*
-Clevis front-end CLI
-@author Derek Nicol
-*/
-
 package main
 
 import (
@@ -14,10 +9,12 @@ import (
 	"github.com/anatol/clevis.go"
 )
 
-var version = "0.0.0-dev"
-var commitSha = ""
-var goVersion = ""
-var libVersion = ""
+var (
+	version string = "0.0.0-dev"
+	// commitSha  string
+	goVersion  string
+	libVersion string
+)
 
 func main() {
 	var output []byte
@@ -48,8 +45,8 @@ func main() {
 
 	case "version":
 		fmt.Printf(
-			"Clevis v%s (%s) %s/%s %s (anatol/clevis v%s)\n",
-			version, commitSha[:7], runtime.GOOS, runtime.GOARCH, goVersion, libVersion,
+			"Clevis v%s %s/%s %s (anatol/clevis v%s)\n",
+			version, runtime.GOOS, runtime.GOARCH, goVersion, libVersion,
 		)
 
 	default:
@@ -76,5 +73,6 @@ func usage(params ...string) {
 
 	fmt.Println("Usage: clevis encrypt <pin> <config>")
 	fmt.Println("       clevis decrypt")
+	fmt.Println("       clevis version")
 	os.Exit(code)
 }
