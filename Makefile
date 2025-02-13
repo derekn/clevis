@@ -33,7 +33,7 @@ $(PLATFORMS):
 
 build: $(PLATFORMS)
 
-release: clean build
+release: lint clean build
 	@parallel 'xz -zv {}' ::: dist/$(APP_NAME)-*
 	@git tag -f 'v$(VERSION)'
 

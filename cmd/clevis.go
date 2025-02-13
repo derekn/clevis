@@ -7,72 +7,67 @@ import (
 	"runtime"
 
 	"github.com/anatol/clevis.go"
+	"github.com/urfave/cli/v2"
 )
 
 var (
-	version string = "0.0.0-dev"
-	// commitSha  string
+	version    string = "0.0.0-dev"
 	goVersion  string
 	libVersion string
 )
 
-func main() {
-	var output []byte
-	var err error
-
-	if len(os.Args[1:]) < 1 {
-		usage("Error: missing action")
-	}
-	action := os.Args[1]
-
-	switch action {
-	case "encrypt":
-		if len(os.Args[2:]) != 2 {
-			usage("Error: missing parameters")
-		}
-
-		input, _ := io.ReadAll(os.Stdin)
-		pin := os.Args[2]
-		config := os.Args[3]
-		output, err = clevis.Encrypt(input, pin, config)
-
-	case "decrypt":
-		input, _ := io.ReadAll(os.Stdin)
-		output, err = clevis.Decrypt(input)
-
-	case "help":
-		usage()
-
-	case "version":
-		fmt.Printf(
-			"Clevis v%s %s/%s %s (anatol/clevis v%s)\n",
-			version, runtime.GOOS, runtime.GOARCH, goVersion, libVersion,
-		)
-
-	default:
-		usage("Error: unknown action")
-	}
-
+func encrypt(pin string, config string) error {
+	input, _ := io.ReadAll(os.Stdin)
+	output, err := clevis.Encrypt(input, pin, config)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
-		os.Exit(1)
+		return err
 	}
-
-	if output != nil {
-		fmt.Println(string(output))
-	}
+	fmt.Println(string(output))
+	return nil
 }
 
-func usage(params ...string) {
-	code := 1
-
-	if len(params) > 0 {
-		fmt.Fprintln(os.Stderr, params[0]+"\n")
-		code = 2
+func decrypt() error {
+	input, _ := io.ReadAll(os.Stdin)
+	output, err := clevis.Decrypt(input)
+	if err != nil {
+		return err
 	}
+	fmt.Println(string(output))
+	return nil
+}
 
-	fmt.Println("Usage: clevis encrypt <pin> <config>")
-	fmt.Println("       clevis decrypt")
-	fmt.Println("       clevis version")
-	os.Exit(code)
+func errorExit(err error) {
+	fmt.Fprintln(os.Stderr, "Error:", err)
+	os.Exit(1)
+}
+
+func main() {
+	app := &cli.App{
+		Name:    "clevis",
+		Usage:   "pluggable framework for automated decryption",
+		Version: fmt.Sprintf("v%s %s/%s %s (anatol/clevis v%s)", version, runtime.GOOS, runtime.GOARCH, goVersion, libVersion),
+		Commands: []*cli.Command{
+			{
+				Name:  "encrypt",
+				Usage: "<pin> <config>",
+				Action: func(ctx *cli.Context) error {
+					if ctx.NArg() != 2 {
+						return fmt.Errorf("missing required arguments: <pin> <config>")
+					}
+					err := encrypt(ctx.Args().Get(0), ctx.Args().Get(1))
+					return err
+				},
+			},
+			{
+				Name: "decrypt",
+				Action: func(ctx *cli.Context) error {
+					err := decrypt()
+					return err
+				},
+			},
+		},
+	}
+	if err := app.Run(os.Args); err != nil {
+		errorExit(err)
+	}
 }
