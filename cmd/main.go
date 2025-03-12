@@ -12,9 +12,15 @@ import (
 )
 
 var (
-	version    string = time.Now().Format("2006.1.2-dev")
+	version    string
 	libVersion string
 )
+
+func init() {
+	if version == "" {
+		version = time.Now().Format("2006.1.2-dev")
+	}
+}
 
 func encrypt(pin string, config string) (string, error) {
 	input, err := io.ReadAll(os.Stdin)
