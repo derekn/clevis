@@ -5,14 +5,14 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"time"
 
 	"github.com/anatol/clevis.go"
 	"github.com/urfave/cli/v2"
 )
 
 var (
-	version    string = "0.0.0-dev"
-	goVersion  string
+	version    string = time.Now().Format("2006.1.2-dev")
 	libVersion string
 )
 
@@ -45,7 +45,7 @@ func main() {
 	app := &cli.App{
 		Name:    "clevis",
 		Usage:   "pluggable framework for automated decryption",
-		Version: fmt.Sprintf("v%s %s/%s %s (anatol/clevis v%s)", version, runtime.GOOS, runtime.GOARCH, goVersion, libVersion),
+		Version: fmt.Sprintf("v%s %s/%s (anatol/clevis v%s)", version, runtime.GOOS, runtime.GOARCH, libVersion),
 		Commands: []*cli.Command{
 			{
 				Name:  "encrypt",
