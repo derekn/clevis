@@ -16,24 +16,28 @@ var (
 	libVersion string
 )
 
-func encrypt(pin string, config string) error {
-	input, _ := io.ReadAll(os.Stdin)
+func encrypt(pin string, config string) (string, error) {
+	input, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return "", err
+	}
 	output, err := clevis.Encrypt(input, pin, config)
 	if err != nil {
-		return err
+		return "", err
 	}
-	fmt.Println(string(output))
-	return nil
+	return string(output), nil
 }
 
-func decrypt() error {
-	input, _ := io.ReadAll(os.Stdin)
+func decrypt() (string, error) {
+	input, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return "", err
+	}
 	output, err := clevis.Decrypt(input)
 	if err != nil {
-		return err
+		return "", err
 	}
-	fmt.Println(string(output))
-	return nil
+	return string(output), nil
 }
 
 func main() {
@@ -52,8 +56,13 @@ func main() {
 						_ = cli.ShowAppHelp(ctx)
 						return fmt.Errorf("missing required arguments: <pin> <config>")
 					}
-					err := encrypt(ctx.Args().Get(0), ctx.Args().Get(1))
-					return err
+
+					output, err := encrypt(ctx.Args().Get(0), ctx.Args().Get(1))
+					if err != nil {
+						return err
+					}
+					fmt.Println(output)
+					return nil
 				},
 			},
 			{
@@ -61,8 +70,12 @@ func main() {
 				Usage:   "decrypts stdin",
 				Aliases: []string{"d"},
 				Action: func(ctx *cli.Context) error {
-					err := decrypt()
-					return err
+					output, err := decrypt()
+					if err != nil {
+						return err
+					}
+					fmt.Println(output)
+					return nil
 				},
 			},
 		},
