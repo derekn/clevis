@@ -36,11 +36,6 @@ func decrypt() error {
 	return nil
 }
 
-func errorExit(err error) {
-	fmt.Fprintln(os.Stderr, "Error:", err)
-	os.Exit(1)
-}
-
 func main() {
 	app := &cli.App{
 		Name:    "clevis",
@@ -48,10 +43,13 @@ func main() {
 		Version: fmt.Sprintf("v%s %s/%s (anatol/clevis v%s)", version, runtime.GOOS, runtime.GOARCH, libVersion),
 		Commands: []*cli.Command{
 			{
-				Name:  "encrypt",
-				Usage: "<pin> <config>",
+				Name:      "encrypt",
+				Usage:     "encrypts stdin",
+				Aliases:   []string{"e"},
+				ArgsUsage: "<pin> <config>",
 				Action: func(ctx *cli.Context) error {
 					if ctx.NArg() != 2 {
+						_ = cli.ShowAppHelp(ctx)
 						return fmt.Errorf("missing required arguments: <pin> <config>")
 					}
 					err := encrypt(ctx.Args().Get(0), ctx.Args().Get(1))
@@ -59,7 +57,9 @@ func main() {
 				},
 			},
 			{
-				Name: "decrypt",
+				Name:    "decrypt",
+				Usage:   "decrypts stdin",
+				Aliases: []string{"d"},
 				Action: func(ctx *cli.Context) error {
 					err := decrypt()
 					return err
@@ -68,6 +68,7 @@ func main() {
 		},
 	}
 	if err := app.Run(os.Args); err != nil {
-		errorExit(err)
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
 	}
 }
