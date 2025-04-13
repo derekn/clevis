@@ -5,7 +5,6 @@ GIT_COMMIT := $(shell git rev-parse --short HEAD)
 LIB_VERSION := $(shell go list -m github.com/anatol/clevis.go | awk '{split($$2,x,"-"); print x[2] "-" x[3]}')
 PLATFORMS := $(sort darwin-amd64 darwin-arm64 linux-amd64 linux-arm64 linux-arm $(CURRENT_PLATFORM))
 
-MAKEFLAGS += -j
 .DEFAULT_GOAL := build
 .PHONY: clean update build build-all release lint test $(PLATFORMS)
 
@@ -31,6 +30,7 @@ $(PLATFORMS):
 
 build: $(CURRENT_PLATFORM)
 
+build-all: MAKEFLAGS+=-j
 build-all: $(PLATFORMS)
 
 release: lint clean build-all
