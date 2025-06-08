@@ -47,7 +47,7 @@ func errExit(code int, msg string, args ...interface{}) {
 
 func init() {
 	flag.BoolP("help", "h", false, "display usage help")
-	flag.BoolP("version", "V", false, "display version")
+	flag.Bool("version", false, "display version")
 	flag.CommandLine.SortFlags = false
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Pluggable framework for automated decryption\n\n")
@@ -69,7 +69,7 @@ func main() {
 		case "--help", "-h":
 			flag.Usage()
 			os.Exit(0)
-		case "--version", "-V":
+		case "--version":
 			fmt.Printf("v%s %s/%s (anatol/clevis v%s)\n", version, runtime.GOOS, runtime.GOARCH, libVersion)
 			os.Exit(0)
 		}
