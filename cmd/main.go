@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -8,6 +9,7 @@ import (
 	"time"
 
 	"github.com/anatol/clevis.go"
+	"github.com/lestrrat-go/jwx/jwe"
 	flag "github.com/spf13/pflag"
 )
 
@@ -42,6 +44,22 @@ func decrypt() (string, error) {
 	return string(output), nil
 }
 
+func inspect() (string, error) {
+	input, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return "", err
+	}
+	message, err := jwe.Parse(input)
+	if err != nil {
+		return "", err
+	}
+	output, err := json.MarshalIndent(message, "", "  ")
+	if err != nil {
+		return "", err
+	}
+	return string(output), nil
+}
+
 func errExit(code int, msg string, args ...interface{}) {
 	fmt.Fprintf(os.Stderr, msg+"\n", args...)
 	os.Exit(code)
@@ -57,7 +75,8 @@ func init() {
 		fmt.Fprintf(os.Stderr, "Commands:\n")
 		fmt.Fprintf(os.Stderr, "  %s decrypt         Decrypts using the policy defined at encryption time\n", appName)
 		fmt.Fprintf(os.Stderr, "  %s encrypt sss     Encrypts using a Shamir's Secret Sharing policy\n", appName)
-		fmt.Fprintf(os.Stderr, "  %s encrypt tang    Encrypts using a Tang binding server policy\n\n", appName)
+		fmt.Fprintf(os.Stderr, "  %s encrypt tang    Encrypts using a Tang binding server policy\n", appName)
+		fmt.Fprintf(os.Stderr, "  %s inspect         Dumps raw JWE\n\n", appName)
 		flag.PrintDefaults()
 	}
 	if version == "" {
@@ -98,6 +117,13 @@ func main() {
 
 	case "decrypt", "d":
 		output, err := decrypt()
+		if err != nil {
+			errExit(1, "Error: %v", err)
+		}
+		fmt.Println(output)
+
+	case "inspect", "i":
+		output, err := inspect()
 		if err != nil {
 			errExit(1, "Error: %v", err)
 		}
