@@ -11,6 +11,8 @@ import (
 	flag "github.com/spf13/pflag"
 )
 
+const appName = "clevis"
+
 var (
 	version    string
 	libVersion string
@@ -51,11 +53,11 @@ func init() {
 	flag.CommandLine.SortFlags = false
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Pluggable framework for automated decryption\n\n")
-		fmt.Fprintf(os.Stderr, "Usage: clevis <command> [options...]\n\n")
+		fmt.Fprintf(os.Stderr, "Usage: %s <command> [options...]\n\n", appName)
 		fmt.Fprintf(os.Stderr, "Commands:\n")
-		fmt.Fprintf(os.Stderr, "  clevis decrypt         Decrypts using the policy defined at encryption time\n")
-		fmt.Fprintf(os.Stderr, "  clevis encrypt sss     Encrypts using a Shamir's Secret Sharing policy\n")
-		fmt.Fprintf(os.Stderr, "  clevis encrypt tang    Encrypts using a Tang binding server policy\n\n")
+		fmt.Fprintf(os.Stderr, "  %s decrypt         Decrypts using the policy defined at encryption time\n", appName)
+		fmt.Fprintf(os.Stderr, "  %s encrypt sss     Encrypts using a Shamir's Secret Sharing policy\n", appName)
+		fmt.Fprintf(os.Stderr, "  %s encrypt tang    Encrypts using a Tang binding server policy\n\n", appName)
 		flag.PrintDefaults()
 	}
 	if version == "" {
