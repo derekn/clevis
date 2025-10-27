@@ -1,7 +1,7 @@
 github.com/anatol/clevis.go v0.0.0-20250920193150-57939bafc2d9 h1:lNi1NulIL0TRySZPBKleNsOaLSqTvKCL5IiYTrZjVqw=
 github.com/anatol/clevis.go v0.0.0-20250920193150-57939bafc2d9/go.mod h1:F5LpjH8b87kfo2NWRu8h7SRbFdrKbJY6yIkx6QQXV+0=
-github.com/anatol/tang.go v0.0.0-20250920192240-c9abb4848fe5 h1:tNkGpQennvrppKjvV9ZppRtNFqZHyx1HrPK1NL5xxII=
-github.com/anatol/tang.go v0.0.0-20250920192240-c9abb4848fe5/go.mod h1:F+b89NwjK41vg6JtftZ8fS4z3ZaBdsQkepixQn8gs7g=
+github.com/anatol/tang.go v0.0.0-20250920193351-e505ad2c76db h1:4AyNx4ipXJv+OGyH/29A7qPTUmaEnZRLQDz74AZh9R4=
+github.com/anatol/tang.go v0.0.0-20250920193351-e505ad2c76db/go.mod h1:dH7UKUQ+S9LM+IT3Va46o5lIlhRt3PeQFoZKOBOlpYI=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
