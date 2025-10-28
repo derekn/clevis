@@ -3,7 +3,7 @@ module clevis
 go 1.24.4
 
 require (
-	github.com/anatol/clevis.go v0.0.0-20250920193150-57939bafc2d9
+	github.com/anatol/clevis.go v0.0.0-20251028173434-8461473b675d
 	github.com/lestrrat-go/jwx/v3 v3.0.12
 	github.com/spf13/pflag v1.0.10
 )
