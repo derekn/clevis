@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/anatol/clevis.go"
-	_ "github.com/anatol/tang.go"
 	"github.com/lestrrat-go/jwx/v3/jwe"
 	flag "github.com/spf13/pflag"
 )
