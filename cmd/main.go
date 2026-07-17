@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"runtime/debug"
 	"time"
 
 	"github.com/anatol/clevis.go"
@@ -15,10 +16,20 @@ import (
 
 const appName = "clevis"
 
-var (
-	version    string
-	libVersion string
-)
+var version string
+
+func libVersion() string {
+	info, ok := debug.ReadBuildInfo()
+	if !ok {
+		return "unknown"
+	}
+	for _, dep := range info.Deps {
+		if dep.Path == "github.com/anatol/clevis.go" {
+			return dep.Version
+		}
+	}
+	return "unknown"
+}
 
 func encrypt(pin string, config string) (string, error) {
 	input, err := io.ReadAll(os.Stdin)
@@ -60,7 +71,7 @@ func inspect() (string, error) {
 	return string(output), nil
 }
 
-func errExit(code int, msg string, args ...interface{}) {
+func errExit(code int, msg string, args ...any) {
 	fmt.Fprintf(os.Stderr, msg+"\n", args...)
 	os.Exit(code)
 }
@@ -91,7 +102,7 @@ func main() {
 			flag.Usage()
 			os.Exit(0)
 		case "--version":
-			fmt.Printf("v%s %s/%s (anatol/clevis v%s)\n", version, runtime.GOOS, runtime.GOARCH, libVersion)
+			fmt.Printf("v%s %s/%s (anatol/clevis %s)\n", version, runtime.GOOS, runtime.GOARCH, libVersion())
 			os.Exit(0)
 		}
 	}
@@ -101,7 +112,7 @@ func main() {
 		errExit(2, "Missing command, use --help for usage")
 	}
 
-	switch flag.Arg(0) {
+	switch command {
 	case "encrypt", "e":
 		pin := flag.Arg(1)
 		config := flag.Arg(2)
