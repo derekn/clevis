@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+
+version: 2
+
+builds:
+  - main: ./cmd
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+      - -buildvcs=false
+    ldflags:
+      - -s -w -X main.version={{ .Version }}+{{ .ShortCommit }}
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - arm64
+      - amd64
+      - arm
+    goarm: ['5']
+
+archives:
+  - formats: [xz]
+    files: [none*]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Os }}_
+      {{- .Arch }}
+
+checksum:
+  name_template: SHA256SUMS
