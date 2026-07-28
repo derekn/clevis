@@ -1,7 +1,7 @@
 VERSION = $(shell date '+%Y.%-m.%-d')
 
 .DEFAULT_GOAL := build
-.PHONY: build clean lint release update
+.PHONY: build clean lint release test update
 
 clean:
 	@rm -rf dist/
@@ -16,6 +16,9 @@ build:
 release:
 	@git tag -f v$(VERSION)
 	@goreleaser release --clean
+
+test:
+	@go test -v ./cmd/...
 
 lint:
 	@go vet ./cmd
