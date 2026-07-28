@@ -5,7 +5,6 @@ go 1.26
 require (
 	github.com/anatol/clevis.go v0.0.0-20260526031059-8cd07c1db068
 	github.com/lestrrat-go/jwx/v3 v3.1.1
-	github.com/spf13/pflag v1.0.10
 )
 
 require (
