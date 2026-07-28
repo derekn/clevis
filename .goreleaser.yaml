@@ -24,8 +24,8 @@ archives:
   - formats: [xz]
     files: [none*]
     name_template: >-
-      {{ .ProjectName }}_
-      {{- .Os }}_
+      {{ .ProjectName }}-
+      {{- .Os }}-
       {{- .Arch }}
 
 checksum:
